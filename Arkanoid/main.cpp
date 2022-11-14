@@ -26,6 +26,14 @@ struct Racket
     char rarr[1][width];
 } racket;
 
+struct Ball
+{
+    int xpos;
+    int ypos;
+
+    char barr[1][1];
+} ball;
+
 void createDisplay()
 {
     for (int i = 0; i < display.YMAX; ++i){
@@ -47,7 +55,6 @@ void printDisplay()
             addch(display.dmatrix[i][j]);
         }
     }
-    //getch();
 }
 
 void createBoard()
@@ -67,17 +74,12 @@ void printBoard()
             addch(board.bmatrix[i][j]);
         }
     }
-    //getch();
 }
 
 void createRacket()
 {
     racket.xpos = (board.XMAX - racket.width) / 2;
     racket.ypos = board.YMAX - 1;
-
-    for (int i = racket.xpos; i < racket.xpos + racket.width; ++i){
-        racket.rarr[racket.ypos][i] = 'x';
-    }
 }
 
 void printRacket()
@@ -87,7 +89,6 @@ void printRacket()
         move(racket.ypos = board.YMAX - 1, i);
         addch(racket.rarr[racket.ypos][i] = 'x');
     }
-    //getch();
 }
 
 void moveRacket()
@@ -122,17 +123,33 @@ void moveRacket()
     }
 }
 
+void createBall()
+{
+    ball.xpos = racket.xpos + racket.width / 2 - 1;
+    ball.ypos = racket.ypos - 1;
+}
+
+void moveBall()
+{
+    ball.xpos = racket.xpos + racket.width / 2 - 1;
+    ball.ypos = racket.ypos - 1;
+    move(ball.ypos, ball.xpos);
+    addch(ball.barr[ball.ypos][ball.xpos] = 'o');
+}
+
 int main()
 {
     createDisplay();
     createBoard();
     createRacket();
+    createBall();
     printDisplay();
 
     do
     {
         printBoard();
         printRacket();
+        moveBall();
         moveRacket();
     }
     while (racket.xpos != 200);
